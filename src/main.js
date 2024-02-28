@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-
 import { initializeApp } from 'firebase/app'
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -18,8 +17,7 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_APP_FIREBASE_MEASUREMENT_ID
 }
 
-// Initialize Firebase
-initializeApp(firebaseConfig)
+const firebaseApp = initializeApp(firebaseConfig)
 
 const app = createApp(App)
 
@@ -27,3 +25,4 @@ app.use(router)
 
 app.mount('#app')
 
+export { firebaseApp, app };

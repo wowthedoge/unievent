@@ -1,11 +1,19 @@
 <template>
   <header class="app-header">
-    <h1 class="logo-text"><span class="font-light">UNI</span><span class="font-bold">EVENT</span></h1>  </header>
+    <h1 class="logo-text" @click="logoOnClick"><span class="font-light">UNI</span><span class="font-bold">EVENT</span></h1></header>
 </template>
 
 <script setup>
 // Script setup area is used for Composition API setup, importing components, etc.
 import '../assets/theme.css'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const logoOnClick = () => {
+  // Your logic here
+  router.push('/');
+}
 </script>
 
 <style scoped>
