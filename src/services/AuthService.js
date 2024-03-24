@@ -1,11 +1,32 @@
-// import { getAuth } from 'firebase/auth';
-// import { firebaseApp } from '../main'; // Import the Firebase app instance
+import { ref, onMounted } from 'vue';
+import { auth } from '@/main'
+import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth'
 
-// const auth = getAuth(firebaseApp);
+const provider = new GoogleAuthProvider()
 
-export default {
-  isAuthenticated() {
-    return true;
-    // return auth.currentUser !== null;
-  }
-};
+const signIn = () =>
+  signInWithPopup(auth, provider)
+    // .then((result) => {})
+    .catch((error) => {
+      const errorCode = error.code
+      const errorMessage = error.message
+      const email = error.customData.email
+      const credential = GoogleAuthProvider.credentialFromError(error)
+      console.log(errorCode, 'Failed log in:', errorMessage, email, credential)
+    })
+
+
+
+const useAuthState = () => {
+  const user = ref(null);
+
+  onMounted(() => {
+    onAuthStateChanged(auth, (firebaseUser) => {
+      user.value = firebaseUser;
+    });
+  });
+
+  return { user };
+}
+
+export { signIn, useAuthState }

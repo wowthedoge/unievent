@@ -1,18 +1,31 @@
 <template>
   <header class="app-header">
-    <h1 class="logo-text" @click="logoOnClick"><span class="font-light">UNI</span><span class="font-bold">EVENT</span></h1></header>
+    <div class="logo-text" @click="logoOnClick">
+      <span class="font-light">UNI</span><span class="font-bold">EVENT</span>
+    </div>
+    <div v-if="user" class="user-display">
+      <img class="user-photo" :src="user.photoURL" alt="user-image"/>    
+      <p class="user-name">{{ user.displayName }}</p>
+    </div>
+    <button v-else class="sign-in-button" @click="onSignInButtonClick">Sign In</button>
+  </header>
 </template>
 
 <script setup>
-// Script setup area is used for Composition API setup, importing components, etc.
 import '../assets/theme.css'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
+import { signIn, useAuthState } from '../services/AuthService'
 
-const router = useRouter();
+const { user } = useAuthState()
 
+const router = useRouter()
 const logoOnClick = () => {
-  // Your logic here
-  router.push('/');
+  console.log('logo on click')
+  router.push('/')
+}
+
+const onSignInButtonClick = () => {
+  signIn()
 }
 </script>
 
@@ -27,27 +40,56 @@ const logoOnClick = () => {
   z-index: 1000;
   height: 50px;
   padding-left: 40px;
+  padding-right: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .app-header .logo-text {
   color: var(--color-light);
-  margin: 0; /* Removes default margins from the h1 element */
+  margin: 0;
   line-height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  display: inline-block;
 }
 
-.app-header .logo-text {
+.sign-in-button {
+  background-color: var(--color-yellow);
+  border-radius: 20px;
+  height: 30px;
+  border: none;
+  color: var(--color-dark);
+  padding: 0 30px;
+}
+
+.user-display {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.user-name {
   color: var(--color-light);
-  margin: 0; /* Removes default margins from the h1 element */
-  font-size: 24px; /* Fixed font size */
+  margin: 0;
+}
+
+.user-photo {
+  border-radius: 50%;
+  height: 30px;
+  object-fit: cover;
 }
 
 .font-light {
-  font-weight: 300; /* Lighter font weight for "uni" */
+  font-weight: 300;
 }
 
 .font-bold {
-  font-weight: 700; /* Bolder font weight for "event" */
+  font-weight: 700;
   color: var(--color-yellow);
-
 }
 </style>
