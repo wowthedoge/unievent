@@ -2,10 +2,17 @@
   <main class="main">
     <div class="title">Today's Events</div>
     <HorizontalMenu :events="events" />
+    <button class="create-event-button" @click="onCreateEventButtonClick"> + Create an event </button>
   </main>
 </template>
 
 <script setup>
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const onCreateEventButtonClick = () => {
+  router.push('/create-event');
+} 
 
 // import EventCard from "../components/EventCard.vue";
 import HorizontalMenu from "../components/HorizontalMenu.vue"
@@ -74,5 +81,16 @@ const events = [
 .swiper-slide {
   display: flex;
   justify-content: center;
+}
+
+.create-event-button {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  border-radius: 25px;
+  background-color: var(--color-yellow);
+  color: var(--color-dark);
+  border: none;
+  padding: 10px 20px;
 }
 </style>
