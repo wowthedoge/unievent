@@ -1,6 +1,6 @@
 <template>
   <main class="main">
-    <div class="title">Today's Events</div>
+    <div class="title">Upcoming Events</div>
     <HorizontalMenu :events="events" />
     <button class="create-event-button" @click="onCreateEventButtonClick"> + Create an event </button>
   </main>

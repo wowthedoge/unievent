@@ -1,6 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import CreateEventView from '../views/CreateEventView.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+import CreateEventView from '../views/CreateEventView.vue'
+import EventDetailsView from '@/views/EventDetailsView.vue'
+import TestView from '@/views/TestView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -10,11 +13,16 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/create-event', // Define the route path
-      name: 'createEvent', // Define the route name
-      component: CreateEventView // Specify the component to render for this route
+      path: '/create-event',
+      name: 'createEvent',
+      component: CreateEventView
     },
+    {
+      path: '/event/:id',
+      name: 'event',
+      component: EventDetailsView
+    }
   ]
 })
 
-export default router;
+export default router

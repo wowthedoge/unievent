@@ -1,38 +1,48 @@
-    <template>
-        <div class="event-card">
-        <img :src="event.image" alt="Event Image" />
-        <div class="content">
-            <h3>{{ event.title }}</h3>
-            <p>{{ event.description }}</p>
-        </div>
-        </div>
-    </template>
-    
-    <script setup>
-    defineProps({
-        event: Object
-    });
-    </script>
-    
-    <style scoped>
+<template>
+  <div class="event-card" @click="navigateToEventDetails(event)">
+    <img :src="event.image" alt="Event Image" />
+    <div class="content">
+      <h3>{{ event.title }}</h3>
+      <p>{{ event.description }}</p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+
+defineProps({
+  event: Object
+})
+
+const router = useRouter()
+
+const navigateToEventDetails = (event) => {
+  router.push({ name: 'event', params: { id: event.id } })
+}
+</script>
+
+<style scoped>
 .event-card {
-    border-radius: 20px; /* Increase for more rounded corners */
-    width: clamp(100px, 60vw, 500px); /* Adjust according to your preference */
-    margin: 0 auto; /* Centers the card if the parent container is wider */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: adds a subtle shadow for depth */
-    overflow: hidden; /* Ensures the content respects the border radius */
+  border-radius: 20px;
+  width: clamp(100px, 60vw, 500px);
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .event-card img {
-  width: 100%; /* Keeps the image width responsive to the container width */
-  object-fit: cover; /* Ensures the image covers the frame, cropping if necessary */
+  width: 100%;
+  object-fit: cover;
 }
 
 .event-card .content {
-  padding: 15px; /* Increased padding for more space inside */
-    }
+  padding: 15px;
+}
 
-.event-card h3, .event-card p {
-  margin: 10px 0; /* Adds some space between the title, description, and the edges */
+.event-card h3,
+.event-card p {
+  margin: 10px 0;
 }
 </style>

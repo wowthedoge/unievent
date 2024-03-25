@@ -20,7 +20,6 @@ const { user } = useAuthState()
 
 const router = useRouter()
 const logoOnClick = () => {
-  console.log('logo on click')
   router.push('/')
 }
 
@@ -91,5 +90,11 @@ const onSignInButtonClick = () => {
 .font-bold {
   font-weight: 700;
   color: var(--color-yellow);
+}
+
+@media (min-width: 841px) {
+  .app-header {
+    padding-right: 50px;
+  }
 }
 </style>

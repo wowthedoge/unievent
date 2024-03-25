@@ -85,7 +85,6 @@ const removeTag = (index) => {
 // }
 
 const submitEvent = async () => {
-  console.log('submitEvent called')
   try {
     // Upload picture to Firebase Storage and get URL
     // const storage = getStorage()
