@@ -1,10 +1,10 @@
 <template>
   <div v-if="event" class="event-details-main">
-    <div>
+    <div class="event-details">
+      <img :src="event.picture" alt="Event Picture" />
       <h2 class="title">{{ event.title }}</h2>
       <p>{{ event.description }}</p>
       <p>{{ formatDateTime(event.date, event.time) }}</p>
-      <img :src="event.image" alt="Event Picture" />
     </div>
     <ChatComponent />
   </div>
@@ -54,6 +54,16 @@ function formatDateTime(date, time) {
 </script>
 
 <style scoped>
+.event-details {
+  img {
+    width: 40vw;
+    min-width: 250px;
+    object-fit: cover;
+    border-radius: 25px;
+    margin-bottom: 20px;
+  }
+} 
+
 .event-details-main {
   padding: 100px 40px 0 40px;
   display: flex;
@@ -76,5 +86,12 @@ h2 {
     justify-content: start;
     align-items: start;
   }
+
+  .event-details {
+  img {
+    width: 40vw;
+  }
+} 
+
 }
 </style>

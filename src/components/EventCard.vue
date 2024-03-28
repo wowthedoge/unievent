@@ -1,6 +1,6 @@
 <template>
   <div class="event-card" @click="navigateToEventDetails(event)">
-    <img :src="event.image" alt="Event Image" />
+    <img :src="event.picture" alt="Event Picture" />
     <div class="content">
       <h3>{{ event.title }}</h3>
       <p>{{ event.description }}</p>
@@ -25,7 +25,6 @@ const navigateToEventDetails = (event) => {
 <style scoped>
 .event-card {
   border-radius: 20px;
-  /* width: clamp(100px, 60vw, 500px); */
   width: 100%;
   overflow: hidden;
   cursor: pointer;

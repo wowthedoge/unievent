@@ -10,8 +10,8 @@
       <label for="event-description">Description</label>
       <textarea id="event-description" v-model="event.description" required></textarea>
 
-      <!-- <label for="event-picture">Upload image</label>
-      <input id="event-picture" class="input-picture" type="file" @change="onFileChange" /> -->
+      <label for="event-picture">Upload image</label>
+      <input id="event-picture" class="input-picture" type="file" @change="onFileChange" />
 
       <label for="event-date">Date</label>
       <input id="event-date" v-model="event.date" type="date" required />
@@ -47,7 +47,7 @@ import { useRouter } from 'vue-router'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { signIn, useAuthState } from '../services/AuthService'
+import { useAuthState } from '../services/AuthService'
 
 const router = useRouter()
 const { user } = useAuthState()
@@ -77,26 +77,26 @@ const handleAddTag = () => {
 }
 
 const removeTag = (index) => {
-  event.value.tags.splice(index, 1) // Removes 1 item at the specified index
+  event.value.tags.splice(index, 1)
 }
 
-// const onFileChange = (e) => {
-//   event.value.picture = e.target.files[0]
-// }
+const onFileChange = (e) => {
+  event.value.picture = e.target.files[0]
+}
 
 const submitEvent = async () => {
   try {
     // Upload picture to Firebase Storage and get URL
-    // const storage = getStorage()
-    // const storageReference = storageRef(storage, `events/${event.value.picture.name}`)
-    // const uploadResult = await uploadBytes(storageReference, event.value.picture)
-    // const pictureUrl = await getDownloadURL(uploadResult.ref)
+    const storage = getStorage()
+    const storageReference = storageRef(storage, `events/${event.value.picture.name}`)
+    const uploadResult = await uploadBytes(storageReference, event.value.picture)
+    const pictureUrl = await getDownloadURL(uploadResult.ref)
 
     // Save event to Firestore
     const db = getFirestore()
     await addDoc(collection(db, 'events'), {
       ...event.value,
-      //   picture: pictureUrl,
+      picture: pictureUrl,
       tags: event.value.tags.filter((tag) => tag.trim() !== ''), // Remove empty tags
       author: user.value.uid,
     })
