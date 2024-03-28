@@ -1,7 +1,7 @@
 <template>
   <main class="main">
     <div class="title">Upcoming Events</div>
-    <HorizontalMenu :events="events" />
+    <EventGrid :events="events" />
     <button class="create-event-button" @click="onCreateEventButtonClick"> + Create an event </button>
   </main>
 </template>
@@ -12,7 +12,7 @@
 
 
 // import EventCard from "../components/EventCard.vue";
-import HorizontalMenu from "../components/HorizontalMenu.vue"
+import EventGrid from "../components/EventGrid.vue"
 
 import { onMounted, ref } from 'vue';
 import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
@@ -44,8 +44,8 @@ const onCreateEventButtonClick = () => {
 <style scoped>
 .main {
   background-color: var(--color-light);
-  height: 100vh;
-  padding-top: 50px; /* Adjust this value based on your header's height */
+  height: 100%;
+  padding: 50px 0; /* Adjust this value based on your header's height */
 }
 
 .title {
@@ -57,23 +57,9 @@ const onCreateEventButtonClick = () => {
   margin-left: 40px;
 }
 
-/* Ensure the carousel takes full width and the Swiper navigation buttons are visible */
-.carousel {
-  width: 100%;
-}
-
-.swiper {
-  width: 100%;
-}
-
-.swiper-slide {
-  display: flex;
-  justify-content: center;
-}
-
 .create-event-button {
   z-index: 999;
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   right: 30px;
   border-radius: 25px;
@@ -81,13 +67,13 @@ const onCreateEventButtonClick = () => {
   color: var(--color-dark);
   border: none;
   padding: 10px 20px;
+  font-weight: 500;
+  border: 2px solid var(--color-dark);
+}
+
+.create-event-button:hover {
+  background-color: var(--color-dark);
+  color: var(--color-yellow);
 }
 </style>
 
-<!-- 
-{
-  id: 2,
-  image: 'https://www.business2community.com/wp-content/uploads/2015/10/42454567_m.jpg.jpg',
-  title: 'Event 2',
-  description: 'This is a description of event 2.'
-}, -->

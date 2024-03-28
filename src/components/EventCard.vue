@@ -25,12 +25,19 @@ const navigateToEventDetails = (event) => {
 <style scoped>
 .event-card {
   border-radius: 20px;
-  width: clamp(100px, 60vw, 500px);
-  margin: 0 auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* width: clamp(100px, 60vw, 500px); */
+  width: 100%;
   overflow: hidden;
   cursor: pointer;
+  height: 500px;
+  border: 0.1px solid grey;
+  transition: transform 0.3s ease;
 }
+
+.event-card:hover {
+  transform: scale(1.05); 
+}
+
 
 .event-card img {
   width: 100%;
@@ -38,7 +45,7 @@ const navigateToEventDetails = (event) => {
 }
 
 .event-card .content {
-  padding: 15px;
+  padding: 20px;
 }
 
 .event-card h3,
