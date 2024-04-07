@@ -13,6 +13,9 @@
       <label for="event-picture">Upload image</label>
       <input id="event-picture" class="input-picture" type="file" @change="onFileChange" />
 
+      <label for="event-location">Location</label>
+      <input id="event-location" v-model="event.location" type="text" required />
+
       <label for="event-date">Date</label>
       <input id="event-date" v-model="event.date" type="date" required />
 
@@ -52,7 +55,6 @@ import { useAuthState } from '../services/AuthService'
 const router = useRouter()
 const { user } = useAuthState()
 
-
 library.add(faTimes)
 
 const tempTag = ref('')
@@ -60,10 +62,11 @@ const tempTag = ref('')
 const BASE_EVENT = {
   title: '',
   description: '',
-  date: '', 
+  location: '',
+  date: '',
   time: '',
   tags: [],
-  author: '',
+  authorId: '',
   picture: ''
 }
 
@@ -85,21 +88,30 @@ const onFileChange = (e) => {
   event.value.picture = e.target.files[0]
 }
 
+const uploadPictureAndGetUrl = async (storage, picture) => {
+      const storageReference = storageRef(storage, `events/${picture.name}`)
+      const uploadResult = await uploadBytes(storageReference, picture)
+      return await getDownloadURL(uploadResult.ref)
+    }
+
 const submitEvent = async () => {
   try {
+    console.log('user', user.value)
     // Upload picture to Firebase Storage and get URL
     const storage = getStorage()
-    const storageReference = storageRef(storage, `events/${event.value.picture.name}`)
-    const uploadResult = await uploadBytes(storageReference, event.value.picture)
-    const pictureUrl = await getDownloadURL(uploadResult.ref)
+    const pictureUrl = event.value.picture
+      ? await uploadPictureAndGetUrl(storage, event.value.picture)
+      : 'https://resources.alleghenycounty.us/css/images/Default_No_Image_Available.png'
+
+
 
     // Save event to Firestore
     const db = getFirestore()
     await addDoc(collection(db, 'events'), {
       ...event.value,
       picture: pictureUrl,
-      tags: event.value.tags.filter((tag) => tag.trim() !== ''), // Remove empty tags
-      author: user.value.uid,
+      tags: event.value.tags.filter((tag) => tag.trim() !== ''),
+      authorId: user.value.uid
     })
 
     alert('Event was created!')

@@ -29,7 +29,7 @@ const fetchEvents = async () => {
   events.value = querySnapshot.docs.map(doc => ({
     id: doc.id, // Use the document ID from Firestore as the event ID
     ...doc.data(), // Spread the document data
-    picture: doc.data().picture ?? 'https://www.business2community.com/wp-content/uploads/2015/10/42454567_m.jpg.jpg',
+    picture: doc.data().picture ?? 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
   }));
 };
 
@@ -44,7 +44,8 @@ const onCreateEventButtonClick = () => {
 <style scoped>
 .main {
   background-color: var(--color-light);
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   padding: 50px 0; /* Adjust this value based on your header's height */
 }
 

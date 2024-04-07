@@ -34,7 +34,7 @@ const useAuthState = () => {
             user.value = {
               displayName: userData.displayName,
               photoURL: userData.photoURL,
-              uid: userData.uid
+              uid: uid
             };
           } else {
             await setDoc(userDocRef, {
