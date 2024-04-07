@@ -6,6 +6,7 @@
       @click="toggleDrawer"
     >
       <h3>Chat</h3>
+      <font-awesome-icon icon="bars" class="icon" />
     </div>
     <div
       ref="chatContainer"
@@ -16,17 +17,22 @@
         <li>{{ message.text }}</li>
       </ul>
     </div>
-    <div class="chat-input-bar" :class="{ 'chat-input-bar-open': isDrawerOpen }">
-      <input type="text" size="10" v-model="chatInput" @keyup.enter="sendMessage" />
-      <button @click="sendMessage">Send</button>
+    <div class="chat-input-bar-container">
+      
+      <div class="chat-input-bar" :class="{ 'chat-input-bar-open': isDrawerOpen }">
+        <input type="text" size="10" v-model="chatInput" @keyup.enter="sendMessage" />
+        <button @click="sendMessage">Send</button>
+      </div>
     </div>
   </div>
+  
 </template>
 
 <script setup>
 import { ref, onMounted, nextTick, onUnmounted } from 'vue'
 import { getDatabase, ref as firebaseRef, onValue, push, set } from 'firebase/database'
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router' 
+
 
 const route = useRoute()
 const isDrawerOpen = ref(false)
@@ -89,55 +95,55 @@ const sendMessage = () => {
 </script>
 
 <style scoped>
+
 .chat {
   z-index: 99;
-  border: 1px solid green;
 }
 
 
 .chat-list {
   margin-top: 30px;
-  width: calc(100% - 80px);
-  max-width: 400px;
+  width: 100vw;
+  max-width: 440px;
   padding-top: 30px;
-  border-top: 1px solid var(--color-dark);
+  border: 1px solid var(--color-dark);
   overflow-y: scroll;
   height: 70px;
   position: fixed;
-  right: 40px;
-  left: 40px;
   bottom: 80px;
   transition: height 0.3s ease;
+  background-color: white;
 }
 
 .chat-list-open {
-  height: 50vh;
+  height: 65vh;
 }
 
 h3 {
   font-family: 'League Spartan', sans-serif;
   font-size: clamp(30px, 4vw, 40px);
-  color: var(--color-black);
+  color: var(--color-light);
   margin-top: auto;
   margin-bottom: auto;
 }
 
 .chat-toggle-bar {
-  width: calc(100% - 80px);
-  max-width: 400px;
+  width: 100%;
+  max-width: 440px;
   cursor: pointer;
   position: fixed;
   bottom: 150px;
-  background-color: white;
+  background-color: var(--color-dark);
   transition: bottom 0.3s ease;
-}
-
-.chat-toggle-bar :hover {
-  background-color: rgb(215, 215, 215);
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  overflow: hidden;
+  padding-left: 40px;
+  padding-top: 12px;
 }
 
 .chat-toggle-bar-open {
-  bottom: calc(50vh + 80px);
+  bottom: calc(65vh + 80px);
 }
 
 .chat ul {
@@ -159,16 +165,13 @@ h3 {
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  bottom: -170px;
-  left: 40px;
-  width: calc(100% - 80px);
-  max-width: 400px;
-  transition: bottom 0.3s ease;
+  bottom: 30px;
+  width: 100%;
+  max-width: 440px;
+  padding: 0 10px;
+  background-color: white;
 }
 
-.chat-input-bar-open {
-  bottom: 30px;
-}
 
 .chat-input-bar input[type='text'] {
   flex-grow: 1;
@@ -187,6 +190,19 @@ h3 {
   padding: 4px 15px;
   font-weight: 500;
 }
+
+.chat-input-bar-container {
+  background-color: white;
+  bottom: 0;
+  position: fixed;
+  width: 440px;
+  height: 80px;
+
+}
+  
+  
+  
+
 @media (min-width: 841px) {
 
   .chat-toggle-bar {
@@ -197,7 +213,6 @@ h3 {
 
   .chat-toggle-bar :hover {
     cursor: auto;
-    background-color: white;
   }
 
   .chat-list {
@@ -207,6 +222,10 @@ h3 {
     right: 50px;
     left: auto;
     bottom: 100px;
+  }
+
+  .chat-input-bar {
+    background-color: transparent;
   }
 
   .chat-input-bar {

@@ -15,7 +15,7 @@
 import EventGrid from "../components/EventGrid.vue"
 
 import { onMounted, ref } from 'vue';
-import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, getDocs, orderBy } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
 // Example events data
 const events = ref([]); // Use a ref to hold your events
@@ -23,13 +23,13 @@ const events = ref([]); // Use a ref to hold your events
 const fetchEvents = async () => {
   const db = getFirestore(); // Get Firestore instance
   const eventsCollection = collection(db, 'events'); // Reference to the 'events' collection
-  const eventsQuery = query(eventsCollection);
+  const eventsQuery = query(eventsCollection, orderBy('date', 'desc'));
   const querySnapshot = await getDocs(eventsQuery);
 
   events.value = querySnapshot.docs.map(doc => ({
     id: doc.id, // Use the document ID from Firestore as the event ID
     ...doc.data(), // Spread the document data
-    image: doc.image ?? 'https://www.business2community.com/wp-content/uploads/2015/10/42454567_m.jpg.jpg',
+    picture: doc.data().picture ?? 'https://www.business2community.com/wp-content/uploads/2015/10/42454567_m.jpg.jpg',
   }));
 };
 
@@ -44,7 +44,7 @@ const onCreateEventButtonClick = () => {
 <style scoped>
 .main {
   background-color: var(--color-light);
-  height: 100%;
+  height: 100vh;
   padding: 50px 0; /* Adjust this value based on your header's height */
 }
 

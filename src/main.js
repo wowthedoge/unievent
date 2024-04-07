@@ -4,7 +4,6 @@ import router from './router'
 import { initializeApp } from 'firebase/app'
 import 'bootstrap/dist/css/bootstrap.css';
 import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
 
 
 

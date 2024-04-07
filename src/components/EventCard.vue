@@ -3,7 +3,11 @@
     <img :src="event.picture" alt="Event Picture" />
     <div class="content">
       <h3>{{ event.title }}</h3>
-      <p>{{ event.description }}</p>
+      <div class="date-time-author">
+        <p> {{ event.date }}
+        <span>{{ formatTime(event.time) }}</span></p>
+      </div>
+      <p class="description">{{ event.description }}</p>
     </div>
   </div>
 </template>
@@ -20,6 +24,14 @@ const router = useRouter()
 const navigateToEventDetails = (event) => {
   router.push({ name: 'event', params: { id: event.id } })
 }
+
+function formatTime(time) {
+  const [hour, minute] = time.split(':');
+  const hours = parseInt(hour);
+  const suffix = hours >= 12 ? "PM" : "AM";
+  const adjustedHour = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+  return `${adjustedHour}:${minute} ${suffix}`;
+}
 </script>
 
 <style scoped>
@@ -34,9 +46,8 @@ const navigateToEventDetails = (event) => {
 }
 
 .event-card:hover {
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
-
 
 .event-card img {
   width: 100%;
@@ -50,5 +61,19 @@ const navigateToEventDetails = (event) => {
 .event-card h3,
 .event-card p {
   margin: 10px 0;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* Number of lines you want */
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.date-time-author {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

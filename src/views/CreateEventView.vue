@@ -63,7 +63,8 @@ const BASE_EVENT = {
   date: '', 
   time: '',
   tags: [],
-  author: ''
+  author: '',
+  picture: ''
 }
 
 const event = ref(BASE_EVENT)
