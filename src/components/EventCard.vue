@@ -3,9 +3,10 @@
     <img :src="event.picture" alt="Event Picture" />
     <div class="content">
       <h3>{{ event.title }}</h3>
-      <div class="date-time-author">
-        <p> {{ event.date }}
+      <div class="date-time-location">
+        <p><font-awesome-icon icon="calendar-days" class="icon" />{{ event.date }}
         <span>{{ formatTime(event.time) }}</span></p>
+        <div><font-awesome-icon icon="location-dot" class="icon" />{{ event.location }}</div>
       </div>
       <p class="description">{{ event.description }}</p>
     </div>
@@ -14,6 +15,12 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faLocationDot, faCalendarDays)
+
 
 defineProps({
   event: Object
@@ -45,6 +52,10 @@ function formatTime(time) {
   transition: transform 0.3s ease;
 }
 
+img {
+  max-height: 35%;
+}
+
 .event-card:hover {
   transform: scale(1.05);
 }
@@ -70,10 +81,15 @@ function formatTime(time) {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.date-time-author {
+.date-time-location {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
+  gap: 30px;
   align-items: center;
+}
+
+.icon {
+  margin-right: 8px;
 }
 </style>

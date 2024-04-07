@@ -3,15 +3,19 @@
     <div class="event-details">
       <img :src="event.picture" alt="Event Picture" />
       <h2 class="title">{{ event.title }}</h2>
-      <div class="author-tag">
+      <div class="detail author-tag">
         <h6 class="label">By:</h6>
         <EventAuthorTag :author-id="event.authorId" />
       </div>
-      <div class="datetime">
+      <div class="detail datetime">
         <h4 class="label">Date and Time:</h4>
         <p>{{ formatDateTime(event.date, event.time) }}</p>
       </div>
-      <div class="description">
+      <div class="detail location">
+        <h4 class="label">Location:</h4>
+        <p>{{ event.location }}</p>
+      </div>
+      <div class="detail description">
         <h4 class="label">About Event:</h4>
         <p>{{ event.description }}</p>
       </div>
@@ -113,6 +117,10 @@ h4 {
 .description {
   max-width: 360px;
 
+}
+
+.detail {
+  margin-bottom: 30px;
 }
 
 @media (min-width: 841px) {
