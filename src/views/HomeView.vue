@@ -2,7 +2,7 @@
   <main class="main">
     <div class="title">Upcoming Events</div>
     <EventGrid :events="events" />
-    <button class="create-event-button" @click="onCreateEventButtonClick"> + Create an event </button>
+    <!-- <button class="create-event-button" @click="onCreateEventButtonClick"> + Create an event </button> -->
   </main>
 </template>
 
