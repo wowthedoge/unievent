@@ -33,17 +33,20 @@ const useAuthState = () => {
             user.value = {
               displayName: userData.displayName,
               photoURL: userData.photoURL,
-              uid: uid
+              uid: uid,
+              wantsWeeklyUpdates: userData.wantsWeeklyUpdates
             };
           } else {
             await setDoc(userDocRef, {
               displayName,
               photoURL,
+              wantsWeeklyUpdates: true
             });
             user.value = {
               displayName,
               photoURL,
-              uid
+              uid,
+              wantsWeeklyUpdates: true
             };
             console.log('User saved to Firestore');
             router.push('/edit-profile');
@@ -55,31 +58,30 @@ const useAuthState = () => {
     });
   });
 
-  const modifyUser = async (displayName, photoURL) => {
+  const modifyUser = async (user) => {
     const currentUser = auth.currentUser;
+    const {displayName, photoURL, wantsWeeklyUpdates} = user;
     if (currentUser) {
       const userDocRef = doc(firestore, 'users', currentUser.uid);
       try {
         await setDoc(userDocRef, {
           displayName,
           photoURL,
+          wantsWeeklyUpdates
         });
-        console.log('User updated in Firestore');
         user.value = {
           displayName,
           photoURL,
-          uid: currentUser.uid
+          uid: currentUser.uid,
+          wantsWeeklyUpdates
         };
-        // Optional: You can perform additional actions after updating user data
       } catch (error) {
         console.error('Error updating user data:', error);
       }
     }
-    console.log('Returning user', user);
     return { user, modifyUser };
   };
 
-  console.log('Returning user', user);
   return { user, modifyUser }
 }
 

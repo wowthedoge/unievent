@@ -14,6 +14,10 @@
         <label for="displayName">Username:</label>
         <input type="text" id="displayName" v-model="displayNameInput" required />
       </div>
+      <div class="weekly-email-checkbox">
+        <input type="checkbox" id="weeklyUpdates" v-model="weeklyUpdates" />
+        <label for="weeklyUpdates">Send me weekly events by email!</label>
+      </div>
       <button type="submit" @click="handleSubmit">Save Profile</button>
     </div>
   </div>
@@ -28,15 +32,23 @@ import { watch } from 'vue';
 const router = useRouter();
 const { user, modifyUser } = useAuthState();
 const displayNameInput = ref('');
+const weeklyUpdates = ref(false);
 let profileImageUrl = '';
 
 watch(user, (updatedUser) => {
-  displayNameInput.value = updatedUser.displayName;
-  profileImageUrl = updatedUser.photoURL;
+  if (updatedUser) {
+    displayNameInput.value = updatedUser.displayName || '';
+    profileImageUrl = updatedUser.photoURL;
+    weeklyUpdates.value = updatedUser.wantsWeeklyUpdates;
+  }
 });
 
 const handleSubmit = async () => {
-  await modifyUser(displayNameInput.value, user.value.photoURL);
+  await modifyUser({
+    displayName: displayNameInput.value,
+    photoURL: user.value.photoURL,
+    wantsWeeklyUpdates: weeklyUpdates.value
+  });
   router.go();
 };
 
@@ -72,10 +84,14 @@ label {
   margin-bottom: 5px;
 }
 
-input {
+input[type="text"] {
   width: 100%;
   padding: 8px;
   box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
 }
 
 button {
@@ -125,4 +141,8 @@ button:hover {
   color: #333;
 }
 
+.weekly-email-checkbox {
+  display: flex;
+  flex-direction: row;
+}
 </style>
