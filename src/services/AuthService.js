@@ -51,6 +51,13 @@ const useAuthState = () => {
             console.log('User saved to Firestore');
             router.push('/edit-profile');
           }
+
+          // Handle redirection to the intended route after sign-in
+          const intendedRoute = JSON.parse(localStorage.getItem('intendedRoute'));
+          if (intendedRoute) {
+            localStorage.removeItem('intendedRoute');
+            router.push(intendedRoute);
+        }
         } catch (error) {
           console.error('Error saving user data to Firestore:', error);
         }

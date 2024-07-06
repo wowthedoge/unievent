@@ -18,6 +18,7 @@ import { useRouter } from 'vue-router'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { useAuthState } from '@/services/AuthService';
 
 library.add(faLocationDot, faCalendarDays)
 
@@ -26,9 +27,17 @@ defineProps({
 })
 
 const router = useRouter()
+const { user } = useAuthState();
+
 
 const navigateToEventDetails = (event) => {
-  router.push({ name: 'event', params: { id: event.id } })
+  if (user.value) {
+    router.push({ name: 'event', params: { id: event.id } })
+  } else {
+    // Store the intended route
+    localStorage.setItem('intendedRoute', JSON.stringify({ name: 'event', params: { id: event.id } }))
+    router.push('/sign-in')
+  }
 }
 
 function formatTime(time) {
