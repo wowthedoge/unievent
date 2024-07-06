@@ -21,7 +21,6 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faLocationDot, faCalendarDays)
 
-
 defineProps({
   event: Object
 })
@@ -76,7 +75,7 @@ img {
 
 .description {
   display: -webkit-box;
-  -webkit-line-clamp: 5; /* Number of lines you want */
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;  
   overflow: hidden;
   text-overflow: ellipsis;

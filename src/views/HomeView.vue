@@ -17,20 +17,26 @@ import EventGrid from "../components/EventGrid.vue"
 import { onMounted, ref } from 'vue';
 import { getFirestore, collection, query, getDocs, orderBy } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
-// Example events data
-const events = ref([]); // Use a ref to hold your events
+const events = ref([]);
 
 const fetchEvents = async () => {
-  const db = getFirestore(); // Get Firestore instance
-  const eventsCollection = collection(db, 'events'); // Reference to the 'events' collection
-  const eventsQuery = query(eventsCollection, orderBy('date', 'desc'));
-  const querySnapshot = await getDocs(eventsQuery);
+  try {
+    const db = getFirestore(); // Get Firestore instance
+    const eventsCollection = collection(db, 'events'); // Reference to the 'events' collection
+    const eventsQuery = query(eventsCollection, orderBy('date', 'desc'));
+    
+    const querySnapshot = await getDocs(eventsQuery);
 
-  events.value = querySnapshot.docs.map(doc => ({
-    id: doc.id, // Use the document ID from Firestore as the event ID
-    ...doc.data(), // Spread the document data
-    picture: doc.data().picture ?? 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
-  }));
+    // Process querySnapshot
+    events.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      picture: doc.data().picture ?? 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+    }));
+  } catch (error) {
+    // Handle any errors that occur during fetching or processing
+    console.error('Error fetching events:', error);
+  }
 };
 
 onMounted(fetchEvents);

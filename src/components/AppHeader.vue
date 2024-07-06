@@ -3,7 +3,7 @@
     <div class="logo-text" @click="logoOnClick">
       <span class="font-light">UNI</span><span class="font-bold">EVENT</span>
     </div>
-    <div v-if="user" class="user-display">
+    <div v-if="user" class="user-display" @click="userDisplayOnClick">
       <img class="user-photo" :src="user.photoURL" alt="user-image"/>    
       <p class="user-name">{{ user.displayName }}</p>
     </div>
@@ -21,6 +21,10 @@ const { user } = useAuthState()
 const router = useRouter()
 const logoOnClick = () => {
   router.push('/')
+}
+
+const userDisplayOnClick = () => {
+  router.push('/edit-profile');
 }
 
 const onSignInButtonClick = () => {
@@ -70,6 +74,7 @@ const onSignInButtonClick = () => {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  cursor: pointer;
 }
 
 .user-name {
