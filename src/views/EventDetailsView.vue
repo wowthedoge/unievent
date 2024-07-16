@@ -7,6 +7,11 @@
         <h6 class="label">By:</h6>
         <EventAuthorTag :author-id="event.authorId" />
       </div> -->
+      <div class="detail interested">
+        <p>{{ interestedCount }} currently interested</p>
+        <input type="checkbox" id="interested" :checked="isInterested" @change="toggleInterest" />
+        <label for="interested">I'm interested!</label>
+      </div>
       <div class="detail datetime">
         <h4 class="label">Date and Time:</h4>
         <p>{{ formatDateTime(event.date, event.time) }}</p>
@@ -19,6 +24,7 @@
         <h4 class="label">About Event:</h4>
         <p>{{ event.description }}</p>
       </div>
+      
     </div>
     <ChatComponent />
   </div>
@@ -28,24 +34,51 @@
 <script setup>
 import ChatComponent from '@/components/ChatComponent.vue'
 import EventAuthorTag from '@/components/EventAuthorTag.vue'
-import { ref, onMounted } from 'vue'
-import { getFirestore, doc, getDoc } from 'firebase/firestore'
+import { ref, onMounted, watch } from 'vue'
+import { getFirestore, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import { useRoute } from 'vue-router'
+import { useAuthState } from '@/services/AuthService'
 
 const route = useRoute()
-
 const event = ref(null)
+const interestedCount = ref(0)
+const isInterested = ref(false)
+const { user } = useAuthState()
 
 onMounted(() => {
-  fetchEventFromFirestore()
+    fetchEventFromFirestore()
 })
+
+watch(user, (newUser) => {
+  if (newUser.uid) {
+    isInterested.value = event.value.interestedUsers?.includes(newUser.uid) || false
+  }
+})
+
+const toggleInterest = async () => {
+  const firestore = getFirestore()
+  const eventDocRef = doc(firestore, 'events', route.params.id)
+  if (isInterested.value) {
+    await updateDoc(eventDocRef, {
+      interestedUsers: arrayRemove(user.value.uid)
+    })
+    interestedCount.value -= 1
+  } else {
+    await updateDoc(eventDocRef, {
+      interestedUsers: arrayUnion(user.value.uid)
+    })
+    interestedCount.value += 1
+  }
+  isInterested.value = !isInterested.value
+}
 
 const fetchEventFromFirestore = async () => {
   const firestore = getFirestore()
   const eventDocRef = doc(firestore, 'events', route.params.id)
   const eventDocSnapshot = await getDoc(eventDocRef)
   if (eventDocSnapshot.exists) {
-    event.value = eventDocSnapshot.data() // Assign the document data to event.value
+    event.value = eventDocSnapshot.data()
+    interestedCount.value = event.value.interestedUsers?.length || 0
   } else {
     console.log('Event does not exist in Firestore!')
   }
@@ -133,6 +166,9 @@ h4 {
     max-width: 50vw;
   }
 
+#interested {
+  margin-right: 10px;
+}
 
 }
 </style>

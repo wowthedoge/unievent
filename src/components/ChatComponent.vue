@@ -6,7 +6,6 @@
       @click="toggleDrawer"
     >
       <h3>Chat</h3>
-      <font-awesome-icon icon="bars" class="icon" />
     </div>
     <div
       ref="chatContainer"
