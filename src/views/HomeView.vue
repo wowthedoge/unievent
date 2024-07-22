@@ -23,7 +23,7 @@ const fetchEvents = async () => {
   try {
     const db = getFirestore(); // Get Firestore instance
     const eventsCollection = collection(db, 'events'); // Reference to the 'events' collection
-    const eventsQuery = query(eventsCollection, orderBy('date', 'desc'));
+    const eventsQuery = query(eventsCollection, orderBy('date', 'asc'));
     
     const querySnapshot = await getDocs(eventsQuery);
 
