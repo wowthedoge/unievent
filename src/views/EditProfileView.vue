@@ -49,7 +49,7 @@ const handleSubmit = async () => {
     photoURL: user.value.photoURL,
     wantsWeeklyUpdates: weeklyUpdates.value
   });
-  router.go();
+  router.push('/');
 };
 
 </script>
